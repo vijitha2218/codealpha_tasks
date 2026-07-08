@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Social Media App</title>
+
+  <style>      
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial;
+      background:linear-gradient(to right,#dfe9f3,#ffffff);
+      padding:20px;
+    }
+
+    .container{
+      width:90%;
+      max-width:700px;
+      margin:auto;
+    }
+
+    .profile-card{
+      background:white;
+      padding:30px;
+      border-radius:15px;
+      text-align:center;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom:20px;
+    }
+
+    .profile-card img{
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      margin-bottom:10px;
+    }
+
+    .follow-info{
+      margin:15px 0;
+      font-size:20px;
+      font-weight:bold;
+    }
+
+    #followBtn{
+      background:#ff0066;
+    }
+
+    .create-post{
+      background:white;
+      padding:20px;
+      border-radius:15px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom:20px;
+    }
+
+    textarea{
+      width:100%;
+      height:100px;
+      padding:15px;
+      border-radius:10px;
+      border:1px solid #ccc;
+      resize:none;
+      font-size:16px;
+    }
+
+    button{
+      margin-top:10px;
+      padding:12px 25px;
+      border:none;
+      border-radius:10px;
+      background:#1877f2;
+      color:white;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    .post{
+      background:white;
+      padding:20px;
+      border-radius:15px;
+      margin-bottom:20px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .comment{
+      background:#f1f1f1;
+      padding:10px;
+      border-radius:8px;
+      margin-top:10px;
+    }
+
+    .delete-btn{
+      background:red;
+      margin-left:10px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="profile-card">
+
+    <img src="https://via.placeholder.com/120">
+
+    <h2>Vijitha Reddy</h2>
+
+    <p>@vijithareddy</p>
+
+    <div class="follow-info">
+      <span id="followers">0 Followers</span>
+    </div>
+
+    <button id="followBtn" onclick="followUser()">
+      Follow
+    </button>
+
+  </div>
+
+  <div class="create-post">
+
+    <textarea id="postInput" placeholder="What's on your mind?"></textarea>
+
+    <button onclick="createPost()">Post</button>
+
+  </div>
+
+  <div id="posts"></div>
+
+</div>
+
+<script>
+
+  let following = false;
+  let followers = 0;
+
+  function followUser(){
+
+    let button = document.getElementById("followBtn");
+
+    let followerText = document.getElementById("followers");
+
+    if(!following){
+
+      followers++;
+
+      followerText.innerText = followers + " Followers";
+
+      button.innerText = "Following";
+
+      button.style.background = "green";
+
+      following = true;
+
+    }else{
+
+      followers--;
+
+      followerText.innerText = followers + " Followers";
+
+      button.innerText = "Follow";
+
+      button.style.background = "#ff0066";
+
+      following = false;
+    }
+  }
+
+  function createPost(){
+
+    let text = document.getElementById("postInput").value;
+
+    if(text === ""){
+      alert("Write something!");
+      return;
+    }
+
+    let post = document.createElement("div");
+
+    post.className = "post";
+
+    post.innerHTML = `
+      <h3>@vijithareddy</h3>
+
+      <p>${text}</p>
+
+      <button onclick="likePost(this)">❤️ Like</button>
+
+      <span class="like-count">0 Likes</span>
+
+      <button class="delete-btn" onclick="deletePost(this)">
+        Delete
+      </button>
+
+      <br><br>
+
+      <input type="text" placeholder="Write comment">
+
+      <button onclick="addComment(this)">
+        Comment
+      </button>
+
+      <div class="comments"></div>
+    `;
+
+    document.getElementById("posts").prepend(post);
+
+    document.getElementById("postInput").value = "";
+  }
+
+  function likePost(button){
+
+    let likes = button.nextElementSibling;
+
+    let count = parseInt(likes.innerText);
+
+    count++;
+
+    likes.innerText = count + " Likes";
+  }
+
+  function deletePost(button){
+
+    button.parentElement.remove();
+  }
+
+  function addComment(button){
+
+    let input = button.previousElementSibling;
+
+    let text = input.value;
+
+    if(text === ""){
+      alert("Write comment!");
+      return;
+    }
+
+    let comment = document.createElement("div");
+
+    comment.className = "comment";
+
+    comment.innerText = text;
+
+    button.nextElementSibling.appendChild(comment);
+
+    input.value = "";
+  }
+
+</script>
+
+</body>
+</html>
